@@ -38,15 +38,44 @@ int size(struct Stack* stk)
     return stk_size;
 }
 
-void push(int data, struct Stack *stk)
+int isFull(struct Stack *stk)
 {
-
     if (stk->max_size == size(stk))
     {
         printf("stack overflow as the stack is full\n");
-        return;
+        return 1;
+    }
+    else
+    {
+        return 0;
     }
     
+}
+
+
+
+int isEmpty(struct Stack *stk)
+{
+    if(stk->top == NULL) //if the stack is empty return INT_MIN
+    {
+        printf("stack is empty\n");
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+    
+}
+
+
+void push(int data, struct Stack *stk)
+{
+    int full = isFull(stk);
+    if (full==1)
+    {
+        return;
+    }
     //create the node to be pushed and assign data to it
     struct Node *temp = (struct Node*) malloc(sizeof(struct Node));
     //if temp==NULL heap overflow
@@ -54,16 +83,15 @@ void push(int data, struct Stack *stk)
 
     temp->next  = stk->top; //attach the existing stack to its tail
     stk->top = temp; //make the temp as the top 
+    printf("pushed %d\n",data);
 
 }
 
 void pop(struct Stack *stk)
 {
-    if(stk->top == NULL) //if the stack is empty return INT_MIN
-    {
-        printf("stack is empty\n");
+    int empty = isEmpty(stk);
+    if (empty == 1)
         return;
-    }
 
     struct Node *temp = stk -> top; //create a node to point to top to be freed
 
@@ -82,10 +110,11 @@ int peek(struct Stack *stk)
 
 void display(struct Stack *stk)
 {   
-    if(stk->top == NULL)//if the stack is empty 
+    int empty = isEmpty(stk);
+    if (empty == 1)
     {
-        printf("stack is empty\n");
-        return; 
+        printf("----------------------------------\n");
+        return;
     }
     struct Node *temp = stk->top;
     while(temp!= NULL)

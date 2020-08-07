@@ -35,13 +35,41 @@ int peek(struct Stack *stk)
     return stk->array[stk->top];
 }
 
-void push(int data,struct Stack *stk)
+int isFull(struct Stack *stk)
 {
     if ((stk->top)+1 == stk->max_size)
     {
         printf("stack is full , cannot push due to overflow\n");
-        return;
+        return 1;
     }
+    else
+    {
+        return 0;
+    }
+    
+}
+
+
+int isEmpty(struct Stack *stk)
+{
+    if (stk->top == -1)
+    {
+        printf("stack is empty\n");
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+    
+}
+
+
+void push(int data,struct Stack *stk)
+{
+    int full = isFull(stk);
+    if (full == 1)
+        return;
     //below is equal to 
     //top++;
     //stk->array[top] = data;
@@ -51,11 +79,9 @@ void push(int data,struct Stack *stk)
 
 void pop(struct Stack *stk)
 {
-    if (stk->top == -1)
-    {
-        printf("stack is empty\n");
+    int empty = isEmpty(stk);
+    if (empty == 1)
         return;
-    }
     printf("popping %d\n",stk->array[stk->top]);
     --stk->top;
 }
@@ -63,10 +89,10 @@ void pop(struct Stack *stk)
 void display(struct Stack *stk)
 {
     printf("printing the stack ..... \n");
-    if (stk->top == -1)
+    int empty = isEmpty(stk);
+    if (empty == 1)
     {
-        printf("stack is empty\n");
-        printf("----------------------\n");
+        printf("----------------------------------\n");
         return;
     }
     for(int j = stk->top;j>-1; j--)
